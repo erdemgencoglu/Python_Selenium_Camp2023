@@ -26,15 +26,15 @@ print(metin.find("ata"))
 print(metin.index("ata"))
 # Verilen ifadenin kaç kere tekrarlandıpını döner
 print(metin.count("a"))
-print("-------------Sayılar ve sayı islemleri-------------")
+print("-------------Sayilar ve sayi islemleri-------------")
 sayi1 = 123     # integer sayı
 sayi2 = 12.3    # float sayı
 sayi3 = -14     # negative
 print(sayi1+sayi2)
-print("-------------Mantıksal değişkenler-------------")
+print("-------------Mantiksal degiskenler-------------")
 isRetailer = False
 isSupplier = True
-print("-------------Dizi Türleri-------------")
+print("-------------Dizi Turleri-------------")
 print("--Listeler--")
 mylist = ["apple", "banana", "cherry"]
 print(mylist)
@@ -51,3 +51,16 @@ thisdict = {
 }
 print(thisdict)
 print(thisdict["model"])
+print("-------------If/Else-------------")
+if thisdict["model"] == "Fiesta":
+    print("Fiesta")
+elif thisdict["model"] == "Mustang":
+    print("Mustang")
+
+x = sayi1 > sayi2 and 10 or 11
+print("-------------Donguler-------------")
+for x in mylist:
+    print(x)
+
+for x, y in thisdict.items():
+    print(x, y)
