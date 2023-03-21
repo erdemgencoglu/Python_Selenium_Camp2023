@@ -2,6 +2,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from time import sleep
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
 
 
 class SauceDemoTest:
@@ -9,6 +10,7 @@ class SauceDemoTest:
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.maximize_window()
     driver.get("https://www.saucedemo.com/")
+    action = ActionChains(driver)
     ###
 
     def credentialTest(self):
@@ -32,7 +34,9 @@ class SauceDemoTest:
         self.passwordInput = self.driver.find_element(By.ID, "password")
         self.loginBtn = self.driver.find_element(By.ID, "login-button")
         # case
+        self.action.double_click(self.usernameInput).perform()
         self.usernameInput.send_keys("username")
+        self.action.double_click(self.passwordInput).perform()
         self.passwordInput.send_keys("")
         self.loginBtn.click()
         sleep(2)
@@ -48,7 +52,9 @@ class SauceDemoTest:
         self.passwordInput = self.driver.find_element(By.ID, "password")
         self.loginBtn = self.driver.find_element(By.ID, "login-button")
         # case
+        self.action.double_click(self.usernameInput).perform()
         self.usernameInput.send_keys("locked_out_user")
+        self.action.double_click(self.passwordInput).perform()
         self.passwordInput.send_keys("secret_sauce")
         self.loginBtn.click()
         sleep(2)
@@ -64,12 +70,14 @@ class SauceDemoTest:
         self.passwordInput = self.driver.find_element(By.ID, "password")
         self.loginBtn = self.driver.find_element(By.ID, "login-button")
         # case
+        self.action.double_click(self.usernameInput).perform()
         self.usernameInput.send_keys("")
+        self.action.double_click(self.passwordInput).perform()
         self.passwordInput.send_keys("")
         self.loginBtn.click()
         sleep(2)
         errorBadgeCloseIcon = self.driver.find_element(
-            By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]/h3/button/svg')
+            By.XPATH, '/html/body/div[1]/div/div[2]/div[1]/div/div/form/div[3]/h3/button')
         errorBadgeCloseIcon.click()
         sleep(5)
         print(f"Test result: ")
@@ -79,7 +87,9 @@ class SauceDemoTest:
         self.passwordInput = self.driver.find_element(By.ID, "password")
         self.loginBtn = self.driver.find_element(By.ID, "login-button")
         # case
+        self.action.double_click(self.usernameInput).perform()
         self.usernameInput.send_keys("standard_user")
+        self.action.double_click(self.passwordInput).perform()
         self.passwordInput.send_keys("secret_sauce")
         self.loginBtn.click()
         sleep(2)
@@ -92,4 +102,9 @@ class SauceDemoTest:
 
 
 inputTest = SauceDemoTest()
+inputTest.credentialTest()
+inputTest.passWordTest()
+inputTest.lockedUserTest()
+inputTest.authenticationInfoTest()
+inputTest.successLogin()
 inputTest.productTest()
