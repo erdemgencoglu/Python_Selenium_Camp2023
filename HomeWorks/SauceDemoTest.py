@@ -4,41 +4,92 @@ from time import sleep
 from selenium.webdriver.common.by import By
 
 
-class UserInputTest:
+class SauceDemoTest:
+    # Variables
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver.maximize_window()
+    driver.get("https://www.saucedemo.com/")
+    ###
 
-    def userNameAndPasswordTest(self):
-        driver = webdriver.Chrome(ChromeDriverManager().install())
-        driver.maximize_window()
-        driver.get("https://www.saucedemo.com/")
+    def credentialTest(self):
+        self.usernameInput = self.driver.find_element(By.ID, "user-name")
+        self.passwordInput = self.driver.find_element(By.ID, "password")
+        self.loginBtn = self.driver.find_element(By.ID, "login-button")
+        # case
+        self.usernameInput.send_keys("")
+        self.passwordInput.send_keys("")
+        self.loginBtn.click()
         sleep(2)
-        usernameInput = driver.find_element(By.ID, "user-name")
-        passwordInput = driver.find_element(By.ID, "password")
-        loginBtn = driver.find_element(By.ID, "login-button")
-        loginBtn.click()
-        errorBadge = driver.find_element(
+        errorBadge = self.driver.find_element(
             By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]')
-        if usernameInput.text.strip() == "" and passwordInput.text.strip() == "":
-            driver.execute_script(
-                "arguments[0].innerText = 'Epic sadface: Username is required'", errorBadge)
-        if passwordInput.text.strip() == "":
-            driver.execute_script(
-                "arguments[0].innerText = 'Epic sadface: Password is required'", errorBadge)
-        if usernameInput.text.strip() == "locked_out_user" and passwordInput.text.strip() == "secret_sauce":
-            driver.execute_script(
-                "arguments[0].innerText = 'Epic sadface: Sorry, this user has been locked out.'", errorBadge)
-        if usernameInput.text.strip() == "" and passwordInput.text.strip() == "":
-            usernameInput = driver.find_element(By.ID, "user-name")
-            passwordInput = driver.find_element(By.ID, "password")
-            errorBadgeCloseIcon = driver.find_element(By.XPATH, "//*[@id="login_button_container"]/div/form/div[3]/h3/button/svg")
-            usernameInput.send_keys("")
-            passwordInput.send_keys("")
-            errorBadgeCloseIcon.click()
+        self.driver.execute_script(
+            "arguments[0].innerText = 'Epic sadface: Username is required'", errorBadge)
+        print(f"Test result: {errorBadge.text}")
+        sleep(5)
 
-        if usernameInput.text.strip() == "standard_user" and passwordInput.text.strip() == "secret_sauce":
-            driver.get("https://www.saucedemo.com/inventory.html")
-        while True:
-            print()
+    def passWordTest(self):
+        self.usernameInput = self.driver.find_element(By.ID, "user-name")
+        self.passwordInput = self.driver.find_element(By.ID, "password")
+        self.loginBtn = self.driver.find_element(By.ID, "login-button")
+        # case
+        self.usernameInput.send_keys("username")
+        self.passwordInput.send_keys("")
+        self.loginBtn.click()
+        sleep(2)
+        errorBadge = self.driver.find_element(
+            By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]')
+        self.driver.execute_script(
+            "arguments[0].innerText = 'Epic sadface: Password is required'", errorBadge)
+        print(f"Test result: {errorBadge.text}")
+        sleep(5)
+
+    def lockedUserTest(self):
+        self.usernameInput = self.driver.find_element(By.ID, "user-name")
+        self.passwordInput = self.driver.find_element(By.ID, "password")
+        self.loginBtn = self.driver.find_element(By.ID, "login-button")
+        # case
+        self.usernameInput.send_keys("locked_out_user")
+        self.passwordInput.send_keys("secret_sauce")
+        self.loginBtn.click()
+        sleep(2)
+        errorBadge = self.driver.find_element(
+            By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]')
+        self.driver.execute_script(
+            "arguments[0].innerText = 'Epic sadface: Sorry, this user has been locked out.'", errorBadge)
+        print(f"Test result: {errorBadge.text}")
+        sleep(5)
+
+    def authenticationInfoTest(self):
+        self.usernameInput = self.driver.find_element(By.ID, "user-name")
+        self.passwordInput = self.driver.find_element(By.ID, "password")
+        self.loginBtn = self.driver.find_element(By.ID, "login-button")
+        # case
+        self.usernameInput.send_keys("")
+        self.passwordInput.send_keys("")
+        self.loginBtn.click()
+        sleep(2)
+        errorBadgeCloseIcon = self.driver.find_element(
+            By.XPATH, '//*[@id="login_button_container"]/div/form/div[3]/h3/button/svg')
+        errorBadgeCloseIcon.click()
+        sleep(5)
+        print(f"Test result: ")
+
+    def successLogin(self):
+        self.usernameInput = self.driver.find_element(By.ID, "user-name")
+        self.passwordInput = self.driver.find_element(By.ID, "password")
+        self.loginBtn = self.driver.find_element(By.ID, "login-button")
+        # case
+        self.usernameInput.send_keys("standard_user")
+        self.passwordInput.send_keys("secret_sauce")
+        self.loginBtn.click()
+        sleep(2)
+
+    def productTest(self):
+        self.successLogin()
+        sleep(5)
+        products = self.driver.find_elements(By.CLASS_NAME, "inventory_item")
+        print(f"Test result: Product total count-> {len(products)}")
 
 
-inputTest = UserInputTest()
-inputTest.userNameAndPasswordTest()
+inputTest = SauceDemoTest()
+inputTest.productTest()
